@@ -10,7 +10,7 @@ jobs:
   steps:
   - checkout: self
 
- - script: |
+  - script: |
       # Replace placeholders in application.properties with pipeline variables
       sed -i "s|{{jdbc:mysql://\${MYSQL_HOST:localhost}:\${MYSQL_PORT:3306}}}|$(DB_URL)|g" src/main/resources/application.properties
       sed -i "s|{{MYSQL_USER:root}}|$(DB_USERNAME)|g" src/main/resources/application.properties
