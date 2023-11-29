@@ -3,10 +3,9 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-  
+
 variables:
 - group: Azcheck
-
 
 jobs:
 - job: BuildAndPackage
@@ -15,18 +14,19 @@ jobs:
   - checkout: self
 
   - script: |
-      # # Set environment variables
-      # export DB_URL="$(VG_DB_URL)"
-      # export DB_USERNAME="$(VG_DB_USERNAME)"
-      # export DB_PASSWORD="$(VG_DB_PASSWORD)"
+      # Set environment variables (assuming you have these variables in the variable group)
+      export DB_URL=$(VG_DB_URL)
+      export DB_USERNAME=$(VG_DB_USERNAME)
+      export DB_PASSWORD=$(VG_DB_PASSWORD)
 
-      echo "check=${VG_DB_URL}"
-      echo "check=${VG_DB_USERNAME}"
-      echo "check=${VG_DB_PASSWORD}"
-      # # Replace placeholders in application.properties with environment variables
-      # sed -i "s|"$(VG_DB_URL)"|$VG_DB_URL|g" src/main/resources/application.properties
-      # sed -i "s|{{MYSQL_USER:root}}|$VG_DB_USERNAME|g" src/main/resources/application.properties
-      # sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$VG_DB_PASSWORD|g" src/main/resources/application.properties
+      echo "check=${DB_URL}"
+      echo "check=${DB_USERNAME}"
+      echo "check=${DB_PASSWORD}"
+
+      # Replace placeholders in application.properties with environment variables
+      sed -i "s|{{jdbc:mysql://\${MYSQL_HOST:localhost}:\${MYSQL_PORT:3306}}}|$DB_URL|g" src/main/resources/application.properties
+      sed -i "s|{{MYSQL_USER:root}}|$DB_USERNAME|g" src/main/resources/application.properties
+      sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$DB_PASSWORD|g" src/main/resources/application.properties
     displayName: 'Replace placeholders in application.properties'
 
   - task: Maven@4
@@ -42,9 +42,14 @@ jobs:
       effectivePomSkip: false
       sonarQubeRunAnalysis: false
 
+  - script: |
+      # Create a zip file from the contents of the target folder
+      cd target
+      zip -r ../JavaApp.zip .
+
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: 'target'
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/JavaApp.zip'
       artifactName: 'JavaApp'
       publishLocation: 'container'
     displayName: 'Publish Artifact'
