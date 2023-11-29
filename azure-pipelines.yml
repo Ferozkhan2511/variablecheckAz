@@ -12,9 +12,9 @@ jobs:
 
   - script: |
       # Replace placeholders in application.properties with pipeline variables
-      sed -i "s|{{jdbc:mysql://\${MYSQL_HOST:localhost}:\${MYSQL_PORT:3306}}}|$(DB_URL)|g" src/main/resources/application.properties
-      sed -i "s|{{MYSQL_USER:root}}|$(DB_USERNAME)|g" src/main/resources/application.properties
-      sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$(DB_PASSWORD)|g" src/main/resources/application.properties
+      sed -i "s|{{jdbc:mysql://\${MYSQL_HOST:localhost}:\${MYSQL_PORT:3306}}}|$({{jdbc:mysql://\${MYSQL_HOST:localhost}:\${MYSQL_PORT:3306})|g" src/main/resources/application.properties
+      sed -i "s|{{MYSQL_USER:root}}|$(MYSQL_USER:root)|g" src/main/resources/application.properties
+      sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$(MYSQL_PASSWORD:Changepond@123)|g" src/main/resources/application.properties
     displayName: 'Replace placeholders in application.properties'
 
   - task: Maven@3
