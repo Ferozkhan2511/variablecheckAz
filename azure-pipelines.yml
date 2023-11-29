@@ -8,21 +8,21 @@ jobs:
 - job: BuildAndPackage
   displayName: 'Build and Package Java Application'
   steps:
- # - checkout: self
-
-  - task: Maven@3
- #   inputs:
-   #   mavenPomFile: 'pom.xml'
-   #   goals: 'clean package'
-   #   options: '-Xmx3072m'
-   #   jdkVersionOption: '11'
+  - checkout: self
 
   - script: |
-      # Replace placeholders in application.properties with environment variables
+      # Replace placeholders in application.properties with pipeline variables
       sed -i "s|{{jdbc:mysql://\${MYSQL_HOST:localhost}:\${MYSQL_PORT:3306}}}|$(DB_URL)|g" src/main/resources/application.properties
       sed -i "s|{{MYSQL_USER:root}}|$(DB_USERNAME)|g" src/main/resources/application.properties
       sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$(DB_PASSWORD)|g" src/main/resources/application.properties
     displayName: 'Replace placeholders in application.properties'
+
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'clean package'
+      options: '-Xmx3072m'
+      jdkVersionOption: '11'
 
   - task: PublishBuildArtifacts@1
     inputs:
