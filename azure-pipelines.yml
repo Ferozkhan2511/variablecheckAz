@@ -11,7 +11,7 @@ jobs:
  # - checkout: self
 
   - task: Maven@3
-    inputs:
+ #   inputs:
    #   mavenPomFile: 'pom.xml'
    #   goals: 'clean package'
    #   options: '-Xmx3072m'
