@@ -8,7 +8,7 @@ jobs:
 - job: BuildAndPackage
   displayName: 'Build and Package Java Application'
   steps:
-  - checkout: self
+  #- checkout: self
 
   - task: UseJavaVersion@1
     inputs:
