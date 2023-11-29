@@ -10,16 +10,12 @@ jobs:
   steps:
  # - checkout: self
 
-  - task: UseJavaVersion@1
-    inputs:
-      versionSpec: '17'
-      addToPath: true
-
   - task: Maven@3
     inputs:
-      mavenPomFile: 'pom.xml'  # Adjust the path to your pom.xml file
+      mavenPomFile: 'pom.xml'
       goals: 'clean package'
       options: '-Xmx3072m'
+      jdkVersionOption: '11'
 
   - script: |
       # Replace placeholders in application.properties with environment variables
