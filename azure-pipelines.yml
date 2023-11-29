@@ -27,7 +27,7 @@ jobs:
       mavenPomFile: 'pom.xml'
       goals: 'clean package'
       options: '-Xmx3072m'
-      jdkVersionOption: '11'
+      jdkVersionOption: '17'
 
   - task: PublishBuildArtifacts@1
     inputs:
