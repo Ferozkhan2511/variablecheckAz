@@ -1,5 +1,5 @@
 trigger:
-- main
+- none
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -20,10 +20,11 @@ jobs:
       export DB_USERNAME="$(VG_DB_USERNAME)"
       export DB_PASSWORD="$(VG_DB_PASSWORD)"
 
-      # Replace placeholders in application.properties with environment variables
-      sed -i "s|"$(VG_DB_URL)"|$DB_URL|g" src/main/resources/application.properties
-      sed -i "s|{{MYSQL_USER:root}}|$DB_USERNAME|g" src/main/resources/application.properties
-      sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$DB_PASSWORD|g" src/main/resources/application.properties
+      echo "check=$(DB_URL)"
+      # # Replace placeholders in application.properties with environment variables
+      # sed -i "s|"$(VG_DB_URL)"|$DB_URL|g" src/main/resources/application.properties
+      # sed -i "s|{{MYSQL_USER:root}}|$DB_USERNAME|g" src/main/resources/application.properties
+      # sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$DB_PASSWORD|g" src/main/resources/application.properties
     displayName: 'Replace placeholders in application.properties'
 
   - task: Maven@4
