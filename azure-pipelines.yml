@@ -10,20 +10,18 @@ jobs:
   steps:
   #- checkout: self
 
-  - task: UseJavaVersion@1
+  - task: Maven@3
     inputs:
-      versionSpec: '11'
-      addToPath: true
+      mavenPomFile: 'pom.xml'  # Adjust the path to your pom.xml file
+      goals: 'clean package'
+      options: '-Xmx3072m'
 
   - script: |
       # Replace placeholders in application.properties with environment variables
       sed -i "s|{{jdbc:mysql://\${MYSQL_HOST:localhost}:\${MYSQL_PORT:3306}}}|$(DB_URL)|g" src/main/resources/application.properties
       sed -i "s|{{MYSQL_USER:root}}|$(DB_USERNAME)|g" src/main/resources/application.properties
       sed -i "s|{{MYSQL_PASSWORD:Changepond@123}}|$(DB_PASSWORD)|g" src/main/resources/application.properties
-      
-      # Build the Java application
-      ./mvnw clean package
-    displayName: 'Build Java Application'
+    displayName: 'Replace placeholders in application.properties'
 
   - task: PublishBuildArtifacts@1
     inputs:
