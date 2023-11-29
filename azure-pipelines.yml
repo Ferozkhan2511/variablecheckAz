@@ -2,13 +2,18 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 jobs:
 - job: BuildAndPackage
   displayName: 'Build and Package Java Application'
   steps:
-  #- checkout: self
+ # - checkout: self
+
+  - task: UseJavaVersion@1
+    inputs:
+      versionSpec: '17'
+      addToPath: true
 
   - task: Maven@3
     inputs:
